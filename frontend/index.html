@@ -1,0 +1,37 @@
+<html>
+    <head>
+        <title>realtime</title>
+    </head>
+    <body>
+        <script type="text/javascript">
+            
+
+            const ws = new WebSocket("wss://worker.tomhutman.workers.dev/?name=a");
+
+            ws.onopen = () => {
+                console.log('Connected to WebSocket');
+                ws.send(JSON.stringify({ type: "message", message: "hello world" }))
+            };
+
+            ws.onmessage = (event) => {
+                console.log('Received message:', event);
+            };
+
+            ws.onerror = (error) => {
+                console.error('WebSocket error:', error);
+            };
+
+            ws.onclose = () => {
+                console.log('WebSocket connection closed');
+            };
+
+            window.send = (s) => ws.send(JSON.stringify({ type: "message", message: s }))
+
+            fetch("https://worker.tomhutman.workers.dev/?name=a").then((res) => {
+                res.text().then((data) => {
+                    document.body.innerHTML = data
+                })
+            })
+        </script>
+    </body>
+</html>
